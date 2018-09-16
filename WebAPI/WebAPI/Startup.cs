@@ -38,6 +38,15 @@ namespace WebAPI
 
             services.AddAutoMapper();
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy("SiteCorsPolicy",
+                builder => builder.AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .AllowCredentials());
+            });
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
@@ -48,6 +57,9 @@ namespace WebAPI
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseCors("SiteCorsPolicy");
+
             app.UseMvc();
         }
     }
