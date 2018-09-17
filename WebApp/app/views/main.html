@@ -1,26 +1,80 @@
 <div class="container">
   <div class="row">
-      <div class="table-responsive">          
-          <table class="table table-striped">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Name</th>
-                <th>Surname</th>
-                <th>Phone</th>
-                <th>Address</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr ng-repeat="x in customers">
-                <td>{{ $index + 1 }}</td>
-                <td>{{ x.name }}</td>
-                <td>{{ x.surname }}</td>
-                <td>{{ x.telephoneNumber }}</td>
-                <td>{{ x.address }}</td>
-              </tr>
-            </tbody>
-          </table>
+
+      <div class="row" style="margin:0;">
+          <div class="col-lg-4">
+              <button style="margin-bottom:5px;width:100%" type="button" class="btn btn-default" ng-click="openAddCustomerModal()">
+                  Add
+              </button>
           </div>
+          <div class="col-lg-4">
+
+          </div>
+          <div class="col-lg-4">
+              <input ng-model="search" type="text" placeholder="Search..." class="form-control" id="searchText">
+          </div>
+      </div>
+
+
+      <div class="row" style="margin:0;">
+          <div class="table-responsive">          
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>
+                        <span ng-click="sortType = 'name'; sortReverse = !sortReverse">
+                            Name
+                            <span ng-show="sortType == 'name' && !sortReverse" class="fa fa-caret-down"></span>
+                            <span ng-show="sortType == 'name' && sortReverse" class="fa fa-caret-up"></span>
+                        </span>
+                    </th>
+                    <th>
+                        <span ng-click="sortType = 'surname'; sortReverse = !sortReverse">
+                            Surname
+                            <span ng-show="sortType == 'surname' && !sortReverse" class="fa fa-caret-down"></span>
+                            <span ng-show="sortType == 'surname' && sortReverse" class="fa fa-caret-up"></span>
+                        </span>
+                    </th>
+                    <th>
+                        <span ng-click="sortType = 'telephoneNumber'; sortReverse = !sortReverse">
+                            Phone
+                            <span ng-show="sortType == 'telephoneNumber' && !sortReverse" class="fa fa-caret-down"></span>
+                            <span ng-show="sortType == 'telephoneNumber' && sortReverse" class="fa fa-caret-up"></span>
+                        </span>
+                    </th>
+                    <th>
+                        <span ng-click="sortType = 'address'; sortReverse = !sortReverse">
+                            Address
+                            <span ng-show="sortType == 'address' && !sortReverse" class="fa fa-caret-down"></span>
+                            <span ng-show="sortType == 'address' && sortReverse" class="fa fa-caret-up"></span>
+                        </span>
+                    </th>
+                    <th></th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="x in customers | orderBy:sortType:sortReverse | filter : search">
+                    <td>{{$index + 1}}</td>
+                    <td>{{ x.name }}</td>
+                    <td>{{ x.surname }}</td>
+                    <td>{{ x.telephoneNumber }}</td>
+                    <td>{{ x.address }}</td>
+                    <td>
+                      <button style="margin-bottom:5px;width:100%" type="button" class="btn btn-default" ng-click="openUpdateCustomerModal(x,$index)">Update</button>
+                    </td>
+                    <td>
+                      <button style="margin-bottom:5px;width:100%" type="button" class="btn btn-default" ng-click="openDeleteCustomerModal(x,$index)">Delete</button>     
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              </div>
+      </div>
+          <ng-include src="'./views/addCustomerModal.html'"></ng-include>
+          <ng-include src="'./views/updateCustomerModal.html'"></ng-include>
+          <ng-include src="'./views/deleteCustomerModal.html'"></ng-include>
+
   </div>
 </div>

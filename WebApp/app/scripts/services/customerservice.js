@@ -8,17 +8,52 @@
  * Service in the webAppApp.
  */
 angular.module('webAppApp')
-  .service('customerService', ['$q','$http', function ($q,$http) {
+  .factory('customerService', ['$q','$http', function ($q,$http) {
 
     var customers = undefined;
     
-    this.get = function() {
+    return {
+      get :  function() {
  
-      if (!customers) {
- 
+          var deferred = $q.defer();
+   
+          $http.get('http://localhost:5529/api/customer')
+            .then(function(result) {
+              customers = result.data;
+              deferred.resolve(customers);
+            }, function(error) {
+              customers = error;
+              deferred.reject(error);
+            });
+   
+            customers = deferred.promise;
+         
+        return $q.when(customers);
+      },
+  
+      post : function(c) {
+   
+          var deferred = $q.defer();
+   
+          $http.post('http://localhost:5529/api/customer',c)
+            .then(function(result) {
+              customers = result.data;
+              deferred.resolve(customers);
+            }, function(error) {
+              customers = error;
+              deferred.reject(error);
+            });
+   
+            customers = deferred.promise;
+  
+        return $q.when(customers);
+      },
+
+      update : function(c) {
+   
         var deferred = $q.defer();
  
-        $http.get('http://localhost:5529/api/customer')
+        $http.put('http://localhost:5529/api/customer',c)
           .then(function(result) {
             customers = result.data;
             deferred.resolve(customers);
@@ -28,9 +63,28 @@ angular.module('webAppApp')
           });
  
           customers = deferred.promise;
+
+        return $q.when(customers);
+      },
+
+      delete : function(id) {
+   
+        var deferred = $q.defer();
+ 
+        $http.delete('http://localhost:5529/api/customer/'+id)
+          .then(function(result) {
+            customers = result.data;
+            deferred.resolve(customers);
+          }, function(error) {
+            customers = error;
+            deferred.reject(error);
+          });
+ 
+          customers = deferred.promise;
+
+        return $q.when(customers);
       }
 
-      return $q.when(customers);
-    };
+  };
 
   }]);
