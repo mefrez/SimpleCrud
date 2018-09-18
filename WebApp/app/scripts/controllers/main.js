@@ -66,7 +66,7 @@ angular.module('webAppApp')
 
     $scope.updatedCustomerIndex = -1;
 
-    $scope.openUpdateCustomerModal = function(item,index){
+    $scope.openUpdateCustomerModal = function(item){
       $('#updateCustomerModal').modal('show');
 
       $scope.customerUpdate = 
@@ -77,8 +77,8 @@ angular.module('webAppApp')
         telephoneNumber : item.telephoneNumber,
         address : item.address
       }
-
-      $scope.updatedCustomerIndex = index;
+   
+      $scope.updatedCustomerIndex = $scope.findIndex($scope.customers,item.id);
     }
 
     $scope.updateCustomerFunction = function(){
@@ -98,13 +98,13 @@ angular.module('webAppApp')
 
     $scope.deletedCustomerIndex = -1;
 
-    $scope.openDeleteCustomerModal = function(item,index){
+    $scope.openDeleteCustomerModal = function(item){
 
       $('#deleteCustomerModal').modal('show');
 
        $scope.deletedCustomerId = item.id;
 
-       $scope.deletedCustomerIndex = index;
+       $scope.deletedCustomerIndex = $scope.findIndex($scope.customers,item.id);
     }
 
     $scope.deleteCustomerFunction = function(){
@@ -122,5 +122,11 @@ angular.module('webAppApp')
 
     $scope.sortType = 'name';
     $scope.sortReverse = false;  
+
+    // FINDING INDEX OF ELEMENT IN ARRAY
+
+    $scope.findIndex = function(array,id) {
+      return array.findIndex(item => item.id == id);
+    }
 
   }]);
